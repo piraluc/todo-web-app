@@ -21,25 +21,19 @@ public class TaskCategoryTests {
     @Test
     void When_TaskCategoryIsCreated_And_NameIsNull_Then_IllegalArgumentExceptionIsThrown() {
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            new TaskCategory(null, null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new TaskCategory(null, null));
     }
 
     @Test
     void When_TaskCategoryIsCreated_And_NameIsEmpty_Then_IllegalArgumentExceptionIsThrown() {
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            new TaskCategory("", null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new TaskCategory("", null));
     }
 
     @Test
     void When_TaskCategoryIsCreated_And_NameIsBlank_Then_IllegalArgumentExceptionIsThrown() {
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            new TaskCategory("   ", null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new TaskCategory("   ", null));
     }
 
     @Test
@@ -79,9 +73,7 @@ public class TaskCategoryTests {
         final var taskCategory = new TaskCategory("some_name", "some_description");
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            taskCategory.setName("");
-        });
+        assertThrows(IllegalArgumentException.class, () -> taskCategory.setName(""));
     }
 
     @Test
@@ -90,9 +82,7 @@ public class TaskCategoryTests {
         final var taskCategory = new TaskCategory("some_name", "some_description");
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            taskCategory.setName("     ");
-        });
+        assertThrows(IllegalArgumentException.class, () -> taskCategory.setName("     "));
     }
 
     @Test
@@ -101,9 +91,7 @@ public class TaskCategoryTests {
         final var taskCategory = new TaskCategory("some_name", "some_description");
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            taskCategory.setName(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> taskCategory.setName(null));
     }
 
     @Test

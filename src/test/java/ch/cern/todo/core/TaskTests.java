@@ -30,9 +30,7 @@ public class TaskTests {
         final var category = new TaskCategory("some_name", null);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Task(null, "some_description", deadline, category);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Task(null, "some_description", deadline, category));
     }
 
     @Test
@@ -42,9 +40,7 @@ public class TaskTests {
         final var category = new TaskCategory("some_name", null);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Task("", "some_description", deadline, category);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Task("", "some_description", deadline, category));
     }
 
     @Test
@@ -54,9 +50,7 @@ public class TaskTests {
         final var category = new TaskCategory("some_name", null);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Task("   ", "some_description", deadline, category);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Task("   ", "some_description", deadline, category));
     }
 
     @Test
@@ -105,9 +99,7 @@ public class TaskTests {
         final var category = new TaskCategory("some_name", null);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Task("some_name", "some_description", null, category);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Task("some_name", "some_description", null, category));
     }
 
     @Test
@@ -130,9 +122,7 @@ public class TaskTests {
         final var deadline = LocalDateTime.parse("2023-09-22T10:42:50.63");
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Task("some_name", "some_description", deadline, null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> new Task("some_name", "some_description", deadline, null));
     }
 
     @Test
@@ -158,9 +148,7 @@ public class TaskTests {
         final var task = new Task("some_name", "some_description", deadline, category);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            task.setName("");
-        });
+        assertThrows(IllegalArgumentException.class, () -> task.setName(""));
     }
 
     @Test
@@ -171,9 +159,7 @@ public class TaskTests {
         final var task = new Task("some_name", "some_description", deadline, category);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            task.setName("    ");
-        });
+        assertThrows(IllegalArgumentException.class, () -> task.setName("    "));
     }
 
     @Test
@@ -184,9 +170,7 @@ public class TaskTests {
         final var task = new Task("some_name", "some_description", deadline, category);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            task.setName(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> task.setName(null));
     }
 
     @Test
@@ -197,9 +181,7 @@ public class TaskTests {
         final var task = new Task("some_name", "some_description", deadline, category);
 
         // Act & Assert
-        assertDoesNotThrow(() -> {
-            task.setDescription(null);
-        });
+        assertDoesNotThrow(() -> task.setDescription(null));
     }
 
     @Test
@@ -226,9 +208,7 @@ public class TaskTests {
         final var task = new Task("some_name", "some_description", deadline, category);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            task.setDeadline(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> task.setDeadline(null));
     }
 
     @Test
@@ -255,8 +235,6 @@ public class TaskTests {
         final var task = new Task("some_name", "some_description", deadline, category);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> {
-            task.setCategory(null);
-        });
+        assertThrows(IllegalArgumentException.class, () -> task.setCategory(null));
     }
 }
