@@ -1,10 +1,16 @@
 package ch.cern.todo.core;
 
+import javax.persistence.*;
+
+@Entity
 public class TaskCategory {
     private static final String NAME_CANNOT_BE_NULL_OR_BLANK = "The name of a task category cannot be null or blank.";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(unique = true)
     private String name;
 
     private String description;
@@ -35,6 +41,10 @@ public class TaskCategory {
 
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    public TaskCategory() {
+
     }
 
     public TaskCategory(final String name, final String description) {

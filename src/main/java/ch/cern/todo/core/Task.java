@@ -1,12 +1,16 @@
 package ch.cern.todo.core;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 public class Task {
     private static final String NAME_CANNOT_BE_NULL_OR_BLANK = "The name of a task cannot be null or blank.";
     private static final String DEADLINE_CANNOT_BE_NULL = "The deadline of a task cannot be null.";
     private static final String CATEGORY_CANNOT_BE_NULL = "The category of a task cannot be null.";
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
@@ -15,6 +19,7 @@ public class Task {
 
     private LocalDateTime deadline;
 
+    @ManyToOne(cascade = CascadeType.ALL)
     private TaskCategory category;
 
     public long getId() {
@@ -67,6 +72,10 @@ public class Task {
         }
 
         this.category = category;
+    }
+
+    public Task() {
+
     }
 
     public Task(final String name, final String description, final LocalDateTime deadline, final TaskCategory category) {
