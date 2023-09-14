@@ -55,6 +55,19 @@ public class TaskCategoryTests {
     }
 
     @Test
+    void When_IdIsSet_Then_IdIsReturned() {
+        // Arrange
+        final var taskCategory = new TaskCategory("some_name", "some_description");
+
+        // Act
+        taskCategory.setId(12345);
+
+        // Assert
+        final var id = taskCategory.getId();
+        assertEquals(id, 12345);
+    }
+
+    @Test
     void When_NameIsSet_Then_NameIsReturned() {
         // Arrange
         final var taskCategory = new TaskCategory("some_name", "some_description");

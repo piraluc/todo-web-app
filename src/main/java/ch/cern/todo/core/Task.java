@@ -7,6 +7,8 @@ public class Task {
     private static final String DEADLINE_CANNOT_BE_NULL = "The deadline of a task cannot be null.";
     private static final String CATEGORY_CANNOT_BE_NULL = "The category of a task cannot be null.";
 
+    private long id;
+
     private String name;
 
     private String description;
@@ -14,6 +16,14 @@ public class Task {
     private LocalDateTime deadline;
 
     private TaskCategory category;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

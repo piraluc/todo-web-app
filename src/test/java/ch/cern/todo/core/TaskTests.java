@@ -126,6 +126,21 @@ public class TaskTests {
     }
 
     @Test
+    void When_IdIsSet_Then_IdIsReturned() {
+        // Arrange
+        final var deadline = LocalDateTime.now();
+        final var category = new TaskCategory("some_name", null);
+        final var task = new Task("some_name", "some_description", deadline, category);
+
+        // Act
+        task.setId(12345);
+
+        // Assert
+        final var id = task.getId();
+        assertEquals(id, 12345);
+    }
+
+    @Test
     void When_NameIsSet_Then_NameIsReturned() {
         // Arrange
         final var deadline = LocalDateTime.now();
