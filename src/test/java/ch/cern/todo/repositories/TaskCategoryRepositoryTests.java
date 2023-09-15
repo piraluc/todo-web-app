@@ -99,4 +99,19 @@ public class TaskCategoryRepositoryTests {
         // Assert
         assertTrue(taskCategoryRepository.findById(taskCategoryId).isEmpty());
     }
+
+    @Test
+    void When_TaskCategoryIsSearchedByName_Then_TaskCategoryCanBeFound() {
+        // Arrange
+        final var taskCategory = new TaskCategory("some_name", "some_description");
+        final var savedTaskCategoryId = taskCategoryRepository.save(taskCategory).getId();
+
+        // Act
+        final var foundTaskCategory = taskCategoryRepository.findByName("some_name");
+
+        // Assert
+        assertEquals(foundTaskCategory.getId(), savedTaskCategoryId);
+        assertEquals(foundTaskCategory.getName(), "some_name");
+        assertEquals(foundTaskCategory.getDescription(), "some_description");
+    }
 }
