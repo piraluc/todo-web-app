@@ -79,7 +79,7 @@ public class DefaultTaskCategoryServiceTests {
     }
 
     @Test
-    void When_TaskCategoryIsRequestedById_Then_RightTaskCategoryIsReturned() {
+    void When_TaskCategoryIsRequestedById_Then_RightTaskCategoryIsReturned() throws TaskCategoryNotFoundException {
         // Arrange
         final var taskCategory = new TaskCategory("some_name", "some_description");
         taskCategory.setId(42);
@@ -98,18 +98,19 @@ public class DefaultTaskCategoryServiceTests {
     @Test
     void When_TaskCategoryIsRequestedByIdDoesNotExist_Then_ExceptionIsThrown() {
         // Arrange
-        when(taskCategoryRepository.findById(any())).thenThrow(new EntityNotFoundException());
+        when(taskCategoryRepository.findById(any())).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(EntityNotFoundException.class, () -> taskCategoryService.getTaskCategoryById(42L));
+        assertThrows(TaskCategoryNotFoundException.class, () -> taskCategoryService.getTaskCategoryById(42L));
     }
 
     @Test
-    void When_TaskCategoryIsRequestedByName_Then_RightTaskCategoryIsReturned() {
+    void When_TaskCategoryIsRequestedByName_Then_RightTaskCategoryIsReturned() throws TaskCategoryNotFoundException {
         // Arrange
         final var taskCategory = new TaskCategory("some_name", "some_description");
         taskCategory.setId(42);
 
+        when(taskCategoryRepository.existsByName("some_name")).thenReturn(true);
         when(taskCategoryRepository.findByName("some_name")).thenReturn(taskCategory);
 
         // Act
@@ -127,7 +128,7 @@ public class DefaultTaskCategoryServiceTests {
         when(taskCategoryRepository.findByName(any())).thenThrow(new EntityNotFoundException());
 
         // Act & Assert
-        assertThrows(EntityNotFoundException.class, () -> taskCategoryService.getTaskCategoryByName("some_name"));
+        assertThrows(TaskCategoryNotFoundException.class, () -> taskCategoryService.getTaskCategoryByName("some_name"));
     }
 
     @Test
@@ -150,7 +151,7 @@ public class DefaultTaskCategoryServiceTests {
     }
 
     @Test
-    void When_TaskCategoryIsUpdated_Then_TaskCategoryRepositorySaveIsCalled() {
+    void When_TaskCategoryIsUpdated_Then_TaskCategoryRepositorySaveIsCalled() throws TaskCategoryNotFoundException {
         // Arrange
         final var taskCategoryWithUpdates = new TaskCategory("some_new_name", "some_new_description");
         when(taskCategoryRepository.findById(42L)).thenReturn(Optional.of(taskCategoryWithUpdates));
@@ -163,7 +164,7 @@ public class DefaultTaskCategoryServiceTests {
     }
 
     @Test
-    void When_TaskCategoryIsUpdated_Then_UpdatedTaskCategoryIsReturned() {
+    void When_TaskCategoryIsUpdated_Then_UpdatedTaskCategoryIsReturned() throws TaskCategoryNotFoundException {
         // Arrange
         final var taskCategory = new TaskCategory("some_name", "some_description");
         taskCategory.setId(42);
@@ -183,11 +184,20 @@ public class DefaultTaskCategoryServiceTests {
     }
 
     @Test
-    void When_TaskCategoryIsDeleted_Then_TaskCategoryRepositoryDeleteByIdIsCalled() {
+    void When_TaskCategoryIsDeleted_Then_TaskCategoryRepositoryDeleteByIdIsCalled() throws TaskCategoryNotFoundException {
         // Act
         taskCategoryService.deleteTaskCategory(42L);
 
         // Assert
         verify(taskCategoryRepository, times(1)).deleteById(42L);
+    }
+
+    @Test
+    void When_TaskCategoryIsDeletedNotExists_Then_ExceptionIsThrown() {
+        // Arrange
+        when(taskCategoryRepository.existsById(42L)).thenReturn(false);
+
+        // Act & Assert
+        assertThrows(TaskCategoryNotFoundException.class, () -> taskCategoryService.deleteTaskCategory(42L));
     }
 }

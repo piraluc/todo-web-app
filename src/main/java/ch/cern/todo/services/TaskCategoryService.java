@@ -7,13 +7,13 @@ import java.util.List;
 public interface TaskCategoryService {
     TaskCategory createTaskCategory(TaskCategory taskCategory) throws DuplicateTaskCategoryNameException;
 
-    TaskCategory getTaskCategoryById(Long id);
+    TaskCategory getTaskCategoryById(Long id) throws TaskCategoryNotFoundException;
 
-    TaskCategory getTaskCategoryByName(String name);
+    TaskCategory getTaskCategoryByName(String name) throws TaskCategoryNotFoundException;
 
     List<TaskCategory> getTaskCategories();
 
-    TaskCategory updateTaskCategory(Long id, TaskCategory taskCategory);
+    TaskCategory updateTaskCategory(Long id, TaskCategory taskCategory) throws TaskCategoryNotFoundException;
 
-    void deleteTaskCategory(Long id);
+    void deleteTaskCategory(Long id) throws TaskCategoryNotFoundException;
 }

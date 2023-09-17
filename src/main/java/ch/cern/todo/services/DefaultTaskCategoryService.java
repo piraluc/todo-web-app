@@ -5,7 +5,6 @@ import ch.cern.todo.repositories.TaskCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -28,16 +27,21 @@ public class DefaultTaskCategoryService implements TaskCategoryService {
     }
 
     @Override
-    public TaskCategory getTaskCategoryById(Long id) {
+    public TaskCategory getTaskCategoryById(Long id) throws TaskCategoryNotFoundException {
         final var taskCategory = taskCategoryRepository.findById(id);
         if (taskCategory.isEmpty()) {
-            throw new EntityNotFoundException();
+            throw new TaskCategoryNotFoundException();
         }
+
         return taskCategory.get();
     }
 
     @Override
-    public TaskCategory getTaskCategoryByName(String name) {
+    public TaskCategory getTaskCategoryByName(String name) throws TaskCategoryNotFoundException {
+        if (!taskCategoryRepository.existsByName(name)) {
+            throw new TaskCategoryNotFoundException();
+        }
+
         return taskCategoryRepository.findByName(name);
     }
 
@@ -47,7 +51,7 @@ public class DefaultTaskCategoryService implements TaskCategoryService {
     }
 
     @Override
-    public TaskCategory updateTaskCategory(Long id, TaskCategory taskCategory) {
+    public TaskCategory updateTaskCategory(Long id, TaskCategory taskCategory) throws TaskCategoryNotFoundException {
         final var taskCategoryToUpdate = getTaskCategoryById(id);
         taskCategoryToUpdate.setName(taskCategory.getName());
         taskCategoryToUpdate.setDescription(taskCategory.getDescription());
@@ -56,7 +60,11 @@ public class DefaultTaskCategoryService implements TaskCategoryService {
     }
 
     @Override
-    public void deleteTaskCategory(Long id) {
+    public void deleteTaskCategory(Long id) throws TaskCategoryNotFoundException {
+        if (!taskCategoryRepository.existsById(id)) {
+            throw new TaskCategoryNotFoundException();
+        }
+
         taskCategoryRepository.deleteById(id);
     }
 }
