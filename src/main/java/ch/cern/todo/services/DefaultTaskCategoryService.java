@@ -18,7 +18,11 @@ public class DefaultTaskCategoryService implements TaskCategoryService {
     }
 
     @Override
-    public TaskCategory createTaskCategory(TaskCategory taskCategory) {
+    public TaskCategory createTaskCategory(TaskCategory taskCategory) throws DuplicateTaskCategoryNameException {
+        if (taskCategoryRepository.existsByName(taskCategory.getName())) {
+            throw new DuplicateTaskCategoryNameException();
+        }
+
         return taskCategoryRepository.save(taskCategory);
     }
 

@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
 public interface TaskCategoryRepository extends JpaRepository<TaskCategory, Long> {
 
     TaskCategory findByName(String name);
+
+    boolean existsByName(String name);
 }

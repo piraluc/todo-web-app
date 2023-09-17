@@ -5,7 +5,7 @@ import ch.cern.todo.core.TaskCategory;
 import java.util.List;
 
 public interface TaskCategoryService {
-    TaskCategory createTaskCategory(TaskCategory taskCategory);
+    TaskCategory createTaskCategory(TaskCategory taskCategory) throws DuplicateTaskCategoryNameException;
 
     TaskCategory getTaskCategoryById(Long id);
 

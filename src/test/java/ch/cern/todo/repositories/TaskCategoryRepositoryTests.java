@@ -114,4 +114,24 @@ public class TaskCategoryRepositoryTests {
         assertEquals(foundTaskCategory.getName(), "some_name");
         assertEquals(foundTaskCategory.getDescription(), "some_description");
     }
+
+    @Test
+    void When_TaskCategoryByNameExists_Then_TrueIsReturned() {
+        // Arrange
+        final var taskCategory = new TaskCategory("some_name", "some_description");
+        taskCategoryRepository.save(taskCategory);
+
+        // Act & Assert
+        assertTrue(taskCategoryRepository.existsByName("some_name"));
+    }
+
+    @Test
+    void When_TaskCategoryByNameDoesNotExist_Then_FalseIsReturned() {
+        // Arrange
+        final var taskCategory = new TaskCategory("some_different_name", "some_description");
+        taskCategoryRepository.save(taskCategory);
+
+        // Act & Assert
+        assertFalse(taskCategoryRepository.existsByName("some_name"));
+    }
 }

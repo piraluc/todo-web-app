@@ -38,7 +38,7 @@ public class DefaultTaskCategoryServiceTests {
     }
 
     @Test
-    void When_TaskCategoryIsCreated_Then_TaskCategoryRepositorySaveIsCalled() {
+    void When_TaskCategoryIsCreated_Then_TaskCategoryRepositorySaveIsCalled() throws DuplicateTaskCategoryNameException {
         // Arrange
         final var taskCategory = new TaskCategory("some_name", "some_description");
 
@@ -50,7 +50,7 @@ public class DefaultTaskCategoryServiceTests {
     }
 
     @Test
-    void When_TaskCategoryIsCreated_Then_RightTaskCategoryIsReturned() {
+    void When_TaskCategoryIsCreated_Then_RightTaskCategoryIsReturned() throws DuplicateTaskCategoryNameException {
         // Arrange
         final var taskCategory = new TaskCategory("some_name", "some_description");
         taskCategory.setId(42);
@@ -64,6 +64,17 @@ public class DefaultTaskCategoryServiceTests {
         assertEquals(createdTaskCategory.getId(), 42);
         assertEquals(createdTaskCategory.getName(), "some_name");
         assertEquals(createdTaskCategory.getDescription(), "some_description");
+    }
+
+    @Test
+    void When_TaskCategoryIsCreatedWithSameName_Then_DuplicateTaskCategoryNameExceptionIsThrown() {
+        // Arrange
+        final var taskCategoryWithSameName = new TaskCategory("some_name", "some_description");
+
+        when(taskCategoryRepository.existsByName("some_name")).thenReturn(true);
+
+        // Act & Assert
+        assertThrows(DuplicateTaskCategoryNameException.class, () -> taskCategoryService.createTaskCategory(taskCategoryWithSameName));
     }
 
     @Test
