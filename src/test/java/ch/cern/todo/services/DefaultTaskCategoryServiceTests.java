@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -83,7 +84,7 @@ public class DefaultTaskCategoryServiceTests {
         final var taskCategory = new TaskCategory("some_name", "some_description");
         taskCategory.setId(42);
 
-        when(taskCategoryRepository.getById(42L)).thenReturn(taskCategory);
+        when(taskCategoryRepository.findById(42L)).thenReturn(Optional.of(taskCategory));
 
         // Act
         final var createdTaskCategory = taskCategoryService.getTaskCategoryById(42L);
@@ -97,7 +98,7 @@ public class DefaultTaskCategoryServiceTests {
     @Test
     void When_TaskCategoryIsRequestedByIdDoesNotExist_Then_ExceptionIsThrown() {
         // Arrange
-        when(taskCategoryRepository.getById(any())).thenThrow(new EntityNotFoundException());
+        when(taskCategoryRepository.findById(any())).thenThrow(new EntityNotFoundException());
 
         // Act & Assert
         assertThrows(EntityNotFoundException.class, () -> taskCategoryService.getTaskCategoryById(42L));
@@ -152,7 +153,7 @@ public class DefaultTaskCategoryServiceTests {
     void When_TaskCategoryIsUpdated_Then_TaskCategoryRepositorySaveIsCalled() {
         // Arrange
         final var taskCategoryWithUpdates = new TaskCategory("some_new_name", "some_new_description");
-        when(taskCategoryRepository.getById(42L)).thenReturn(taskCategoryWithUpdates);
+        when(taskCategoryRepository.findById(42L)).thenReturn(Optional.of(taskCategoryWithUpdates));
 
         // Act
         taskCategoryService.updateTaskCategory(42L, taskCategoryWithUpdates);
@@ -169,7 +170,7 @@ public class DefaultTaskCategoryServiceTests {
 
         final var taskCategoryWithUpdates = new TaskCategory("some_new_name", "some_new_description");
 
-        when(taskCategoryRepository.getById(42L)).thenReturn(taskCategory);
+        when(taskCategoryRepository.findById(42L)).thenReturn(Optional.of(taskCategory));
         when(taskCategoryRepository.save(taskCategory)).thenReturn(taskCategory);
 
         // Act

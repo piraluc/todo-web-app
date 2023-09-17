@@ -5,6 +5,7 @@ import ch.cern.todo.repositories.TaskCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -28,7 +29,11 @@ public class DefaultTaskCategoryService implements TaskCategoryService {
 
     @Override
     public TaskCategory getTaskCategoryById(Long id) {
-        return taskCategoryRepository.getById(id);
+        final var taskCategory = taskCategoryRepository.findById(id);
+        if (taskCategory.isEmpty()) {
+            throw new EntityNotFoundException();
+        }
+        return taskCategory.get();
     }
 
     @Override
@@ -43,8 +48,7 @@ public class DefaultTaskCategoryService implements TaskCategoryService {
 
     @Override
     public TaskCategory updateTaskCategory(Long id, TaskCategory taskCategory) {
-        final var taskCategoryToUpdate = taskCategoryRepository.getById(id);
-
+        final var taskCategoryToUpdate = getTaskCategoryById(id);
         taskCategoryToUpdate.setName(taskCategory.getName());
         taskCategoryToUpdate.setDescription(taskCategory.getDescription());
 
