@@ -19,7 +19,7 @@ public class Task {
 
     private LocalDateTime deadline;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private TaskCategory category;
 
     public long getId() {
