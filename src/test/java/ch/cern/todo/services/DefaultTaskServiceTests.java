@@ -3,6 +3,7 @@ package ch.cern.todo.services;
 import ch.cern.todo.core.Task;
 import ch.cern.todo.core.TaskCategory;
 import ch.cern.todo.repositories.TaskRepository;
+import ch.cern.todo.services.exceptions.TaskCategoryNotFoundException;
 import ch.cern.todo.services.exceptions.TaskNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
