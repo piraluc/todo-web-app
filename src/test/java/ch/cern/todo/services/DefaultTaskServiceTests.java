@@ -83,6 +83,19 @@ public class DefaultTaskServiceTests {
     }
 
     @Test
+    void When_TaskIsCreatedAndTaskCategoryDoesNotExists_Then_TaskCategoryNotFoundExceptionIsThrown() throws TaskCategoryNotFoundException {
+        // Arrange
+        final var deadline = LocalDateTime.now();
+        final var category = new TaskCategory("some_name", "some_description");
+        final var task = new Task("some_name", "some_description", deadline, category);
+
+        when(taskCategoryService.getTaskCategoryByName("some_name")).thenThrow(new TaskCategoryNotFoundException());
+
+        // Act & Assert
+        assertThrows(TaskCategoryNotFoundException.class, () -> taskService.createTask(task));
+    }
+
+    @Test
     void When_TaskIsRequestedById_Then_RightTaskIsReturned() throws TaskNotFoundException {
         // Arrange
         final var deadline = LocalDateTime.now();
