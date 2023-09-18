@@ -39,8 +39,8 @@ public class DefaultTaskService implements TaskService {
     }
 
     @Override
-    public Task updateTask(Long id, Task task) {
-        final var taskToUpdate = taskRepository.getById(id);
+    public Task updateTask(Long id, Task task) throws TaskNotFoundException {
+        final var taskToUpdate = getTaskById(id);
 
         taskToUpdate.setName(task.getName());
         taskToUpdate.setDescription(task.getDescription());

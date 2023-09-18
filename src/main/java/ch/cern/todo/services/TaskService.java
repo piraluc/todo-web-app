@@ -12,7 +12,7 @@ public interface TaskService {
 
     List<Task> getTasks();
 
-    Task updateTask(Long id, Task task);
+    Task updateTask(Long id, Task task) throws TaskNotFoundException;
 
     void deleteTask(Long id);
 }
