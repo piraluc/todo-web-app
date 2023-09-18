@@ -171,11 +171,23 @@ public class DefaultTaskServiceTests {
     }
 
     @Test
-    void When_TaskIsDeleted_Then_TaskRepositoryDeleteByIdIsCalled() {
+    void When_TaskIsDeleted_Then_TaskRepositoryDeleteByIdIsCalled() throws TaskNotFoundException {
+        // Arrange
+        when(taskRepository.existsById(42L)).thenReturn(true);
+
         // Act
         taskService.deleteTask(42L);
 
         // Assert
         verify(taskRepository, times(1)).deleteById(42L);
+    }
+
+    @Test
+    void When_TaskDeletedDoesNotExist_Then_TaskNotFoundExceptionIsThrown() {
+        // Arrange
+        when(taskRepository.existsById(42L)).thenReturn(false);
+
+        // Act & Assert
+        assertThrows(TaskNotFoundException.class, () -> taskService.deleteTask(42L));
     }
 }

@@ -14,5 +14,5 @@ public interface TaskService {
 
     Task updateTask(Long id, Task task) throws TaskNotFoundException;
 
-    void deleteTask(Long id);
+    void deleteTask(Long id) throws TaskNotFoundException;
 }

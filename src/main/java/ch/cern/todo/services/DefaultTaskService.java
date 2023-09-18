@@ -51,7 +51,10 @@ public class DefaultTaskService implements TaskService {
     }
 
     @Override
-    public void deleteTask(Long id) {
+    public void deleteTask(Long id) throws TaskNotFoundException {
+        if (!taskRepository.existsById(id)) {
+            throw new TaskNotFoundException();
+        }
         taskRepository.deleteById(id);
     }
 }
