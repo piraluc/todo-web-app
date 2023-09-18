@@ -28,6 +28,9 @@ public class DefaultTaskServiceTests {
     @Spy
     private TaskRepository taskRepository;
 
+    @Spy
+    TaskCategoryService taskCategoryService;
+
     private AutoCloseable closeable;
 
     @BeforeEach
@@ -41,11 +44,13 @@ public class DefaultTaskServiceTests {
     }
 
     @Test
-    void When_TaskIsCreated_Then_TaskRepositorySaveIsCalled() {
+    void When_TaskIsCreated_Then_TaskRepositorySaveIsCalled() throws TaskCategoryNotFoundException {
         // Arrange
         final var deadline = LocalDateTime.now();
         final var category = new TaskCategory("some_name", "some_description");
         final var task = new Task("some_name", "some_description", deadline, category);
+
+        when(taskCategoryService.getTaskCategoryByName("some_name")).thenReturn(category);
 
         // Act
         taskService.createTask(task);
@@ -55,13 +60,14 @@ public class DefaultTaskServiceTests {
     }
 
     @Test
-    void When_TaskIsCreated_Then_RightTaskIsReturned() {
+    void When_TaskIsCreated_Then_RightTaskIsReturned() throws TaskCategoryNotFoundException {
         // Arrange
         final var deadline = LocalDateTime.now();
         final var category = new TaskCategory("some_name", "some_description");
         final var task = new Task("some_name", "some_description", deadline, category);
         task.setId(42);
 
+        when(taskCategoryService.getTaskCategoryByName("some_name")).thenReturn(category);
         when(taskRepository.save(task)).thenReturn(task);
 
         // Act
