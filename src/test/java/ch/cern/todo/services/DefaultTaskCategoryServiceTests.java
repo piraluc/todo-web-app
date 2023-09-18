@@ -2,6 +2,8 @@ package ch.cern.todo.services;
 
 import ch.cern.todo.core.TaskCategory;
 import ch.cern.todo.repositories.TaskCategoryRepository;
+import ch.cern.todo.services.exceptions.DuplicateTaskCategoryNameException;
+import ch.cern.todo.services.exceptions.TaskCategoryNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

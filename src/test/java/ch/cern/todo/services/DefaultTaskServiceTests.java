@@ -3,6 +3,7 @@ package ch.cern.todo.services;
 import ch.cern.todo.core.Task;
 import ch.cern.todo.core.TaskCategory;
 import ch.cern.todo.repositories.TaskRepository;
+import ch.cern.todo.services.exceptions.TaskNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,9 +12,9 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -75,14 +76,14 @@ public class DefaultTaskServiceTests {
     }
 
     @Test
-    void When_TaskIsRequestedById_Then_RightTaskIsReturned() {
+    void When_TaskIsRequestedById_Then_RightTaskIsReturned() throws TaskNotFoundException {
         // Arrange
         final var deadline = LocalDateTime.now();
         final var category = new TaskCategory("some_name", "some_description");
         final var task = new Task("some_name", "some_description", deadline, category);
         task.setId(42);
 
-        when(taskRepository.getById(42L)).thenReturn(task);
+        when(taskRepository.findById(42L)).thenReturn(Optional.of(task));
 
         // Act
         final var createdTask = taskService.getTaskById(42L);
@@ -96,12 +97,12 @@ public class DefaultTaskServiceTests {
     }
 
     @Test
-    void When_TaskIsRequestedByIdDoesNotExist_Then_ExceptionIsThrown() {
+    void When_TaskIsRequestedByIdDoesNotExist_Then_TaskNotFoundExceptionIsThrown() {
         // Arrange
-        when(taskRepository.getById(any())).thenThrow(new EntityNotFoundException());
+        when(taskRepository.findById(any())).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(EntityNotFoundException.class, () -> taskService.getTaskById(42L));
+        assertThrows(TaskNotFoundException.class, () -> taskService.getTaskById(42L));
     }
 
     @Test

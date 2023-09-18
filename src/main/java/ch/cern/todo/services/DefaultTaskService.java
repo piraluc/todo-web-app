@@ -2,6 +2,7 @@ package ch.cern.todo.services;
 
 import ch.cern.todo.core.Task;
 import ch.cern.todo.repositories.TaskRepository;
+import ch.cern.todo.services.exceptions.TaskNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,13 @@ public class DefaultTaskService implements TaskService {
     }
 
     @Override
-    public Task getTaskById(Long id) {
-        return taskRepository.getById(id);
+    public Task getTaskById(Long id) throws TaskNotFoundException {
+        final var task = taskRepository.findById(id);
+        if (task.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+
+        return task.get();
     }
 
     @Override

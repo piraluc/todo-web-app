@@ -1,4 +1,4 @@
-package ch.cern.todo.services;
+package ch.cern.todo.services.exceptions;
 
 public class TaskCategoryNotFoundException extends Exception {
 
