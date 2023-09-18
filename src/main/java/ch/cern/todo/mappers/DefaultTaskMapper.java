@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DefaultTaskMapper implements TaskMapper {
-    
+
     private final TaskCategoryMapper taskCategoryMapper;
 
     @Autowired
