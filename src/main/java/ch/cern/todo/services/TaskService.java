@@ -13,7 +13,7 @@ public interface TaskService {
 
     List<Task> getTasks();
 
-    Task updateTask(Long id, Task task) throws TaskNotFoundException;
+    Task updateTask(Long id, Task task) throws TaskNotFoundException, TaskCategoryNotFoundException;
 
     void deleteTask(Long id) throws TaskNotFoundException;
 }

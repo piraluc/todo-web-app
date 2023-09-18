@@ -149,7 +149,7 @@ public class DefaultTaskServiceTests {
     }
 
     @Test
-    void When_TaskIsUpdated_Then_TaskRepositorySaveIsCalled() throws TaskNotFoundException {
+    void When_TaskIsUpdated_Then_TaskRepositorySaveIsCalled() throws TaskNotFoundException, TaskCategoryNotFoundException {
         // Arrange
         final var deadline = LocalDateTime.now();
         final var category = new TaskCategory("some_name", "some_description");
@@ -165,7 +165,7 @@ public class DefaultTaskServiceTests {
     }
 
     @Test
-    void When_TaskIsUpdated_Then_UpdatedTaskIsReturned() throws TaskNotFoundException {
+    void When_TaskIsUpdated_Then_UpdatedTaskIsReturned() throws TaskNotFoundException, TaskCategoryNotFoundException {
         // Arrange
         final var deadline = LocalDateTime.now();
         final var category = new TaskCategory("some_name", "some_description");
@@ -188,6 +188,29 @@ public class DefaultTaskServiceTests {
         assertEquals(updatedTask.getDescription(), "some_new_description");
         assertEquals(updatedTask.getDeadline(), updatedDeadline);
         assertEquals(updatedTask.getCategory(), updatedCategory);
+    }
+
+    @Test
+    void When_TaskUpdatedDoesNotExists_Then_TaskNotFoundExceptionIsThrown() {
+        // Arrange
+        when(taskRepository.findById(any())).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThrows(TaskNotFoundException.class, () -> taskService.updateTask(42L, any()));
+    }
+
+    @Test
+    void When_TaskIsUpdatedAndTaskCategoryDoesNotExists_Then_TaskCategoryNotFoundExceptionIsThrown() throws TaskCategoryNotFoundException {
+        // Arrange
+        final var deadline = LocalDateTime.now();
+        final var category = new TaskCategory("some_name", "some_description");
+        final var task = new Task("some_name", "some_description", deadline, category);
+
+        when(taskRepository.findById(42L)).thenReturn(Optional.of(task));
+        when(taskCategoryService.getTaskCategoryByName("some_name")).thenThrow(new TaskCategoryNotFoundException());
+
+        // Act & Assert
+        assertThrows(TaskCategoryNotFoundException.class, () -> taskService.updateTask(42L, task));
     }
 
     @Test

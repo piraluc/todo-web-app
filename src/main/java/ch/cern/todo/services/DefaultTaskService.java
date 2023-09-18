@@ -48,13 +48,16 @@ public class DefaultTaskService implements TaskService {
     }
 
     @Override
-    public Task updateTask(Long id, Task task) throws TaskNotFoundException {
+    public Task updateTask(Long id, Task task) throws TaskNotFoundException, TaskCategoryNotFoundException {
         final var taskToUpdate = getTaskById(id);
+
+        String taskCategoryName = task.getCategory().getName();
+        final var taskCategory = taskCategoryService.getTaskCategoryByName(taskCategoryName);
 
         taskToUpdate.setName(task.getName());
         taskToUpdate.setDescription(task.getDescription());
         taskToUpdate.setDeadline(task.getDeadline());
-        taskToUpdate.setCategory(task.getCategory());
+        taskToUpdate.setCategory(taskCategory);
 
         return taskRepository.save(taskToUpdate);
     }
