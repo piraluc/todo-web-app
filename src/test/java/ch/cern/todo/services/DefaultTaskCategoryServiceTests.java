@@ -185,6 +185,9 @@ public class DefaultTaskCategoryServiceTests {
 
     @Test
     void When_TaskCategoryIsDeleted_Then_TaskCategoryRepositoryDeleteByIdIsCalled() throws TaskCategoryNotFoundException {
+        // Arrange
+        when(taskCategoryRepository.existsById(42L)).thenReturn(true);
+
         // Act
         taskCategoryService.deleteTaskCategory(42L);
 
