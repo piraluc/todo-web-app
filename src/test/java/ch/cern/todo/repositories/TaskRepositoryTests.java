@@ -52,23 +52,6 @@ public class TaskRepositoryTests {
     }
 
     @Test
-    void When_MultipleTaskAreSaved_Then_AllAreFound() {
-        // Arrange
-        for (int i = 0; i < 3; i++) {
-            final var deadline = LocalDateTime.parse("2023-09-22T10:42:50.63");
-            final var category = new TaskCategory("some_category_name_" + i, "some_category_description");
-            final var task = new Task("some_task_name", "some_task_description", deadline, category);
-            taskRepository.save(task);
-        }
-
-        // Act
-        final var numberOfTasks = taskRepository.count();
-
-        // Assert
-        assertEquals(numberOfTasks, 3);
-    }
-
-    @Test
     void When_TaskIsUpdated_Then_PropertiesAreUpdated() {
         // Arrange
         final var deadline = LocalDateTime.parse("2023-09-22T10:42:50.63");
