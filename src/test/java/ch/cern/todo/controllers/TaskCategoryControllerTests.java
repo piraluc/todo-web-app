@@ -52,7 +52,6 @@ public class TaskCategoryControllerTests {
         final var taskCategoryRequest = new TaskCategoryRequestModel("some_name", "some_description");
         final var taskCategory = new TaskCategory("some_name", "some_description");
         final var createdTaskCategory = new TaskCategory("some_name", "some_description");
-        createdTaskCategory.setId(42);
         final var taskCategoryResponse = new TaskCategoryResponseModel(42, "some_name", "some_description");
 
         when(taskCategoryMapper.mapToTaskCategory(taskCategoryRequest)).thenReturn(taskCategory);
@@ -87,7 +86,6 @@ public class TaskCategoryControllerTests {
     void When_GetTaskCategoryIsCalled_Then_ResponseIsReturned() throws TaskCategoryNotFoundException {
         // Arrange
         final var taskCategory = new TaskCategory("some_name", "some_description");
-        taskCategory.setId(42);
         final var taskCategoryResponse = new TaskCategoryResponseModel(42, "some_name", "some_description");
 
         when(taskCategoryService.getTaskCategoryById(42L)).thenReturn(taskCategory);
@@ -104,10 +102,7 @@ public class TaskCategoryControllerTests {
     void When_GetTaskCategoriesIsCalled_Then_AllTaskCategoriesAreReturned() {
         // Arrange
         final var taskCategoryA = new TaskCategory("some_name", "some_description");
-        taskCategoryA.setId(42);
-
         final var taskCategoryB = new TaskCategory("some_other_name", "some_other_description");
-        taskCategoryB.setId(73);
 
         final var taskCategoryResponseA = new TaskCategoryResponseModel(42, "some_name", "some_description");
         final var taskCategoryResponseB = new TaskCategoryResponseModel(73, "some_other_name", "some_other_description");
@@ -130,7 +125,6 @@ public class TaskCategoryControllerTests {
         // Arrange
         final var taskCategoryRequest = new TaskCategoryRequestModel("some_new_name", "some_new_description");
         final var taskCategory = new TaskCategory("some_new_name", "some_new_description");
-        taskCategory.setId(42);
         final var taskCategoryResponse = new TaskCategoryResponseModel(42, "some_new_name", "some_new_description");
 
         when(taskCategoryMapper.mapToTaskCategory(taskCategoryRequest)).thenReturn(taskCategory);
@@ -142,6 +136,21 @@ public class TaskCategoryControllerTests {
 
         // Assert
         assertEquals(response, taskCategoryResponse);
+    }
+
+    @Test
+    void When_UpdateTaskCategoryIsCalled_Then_TaskCategoryServiceUpdatedTaskCategoryIsCalledOnce() throws TaskCategoryNotFoundException {
+        // Arrange
+        final var taskCategoryRequest = new TaskCategoryRequestModel("some_new_name", "some_new_description");
+        final var taskCategory = new TaskCategory("some_new_name", "some_new_description");
+
+        when(taskCategoryMapper.mapToTaskCategory(taskCategoryRequest)).thenReturn(taskCategory);
+
+        // Act
+        taskCategoryController.updateTaskCategory(42L, taskCategoryRequest);
+
+        // Assert
+        verify(taskCategoryService, times(1)).updateTaskCategory(42L, taskCategory);
     }
 
     @Test
