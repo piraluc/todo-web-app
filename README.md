@@ -11,6 +11,8 @@ Once you are ready, please send it to me (ie link to your git repository) before
 
 ### Usage
 
+A Postman documentation of the API can be found here: https://documenter.getpostman.com/view/2287668/2s9YC8wqkv
+
 #### Start the server
 
 ```bash
