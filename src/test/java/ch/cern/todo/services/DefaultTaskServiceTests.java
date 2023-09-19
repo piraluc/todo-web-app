@@ -152,9 +152,10 @@ public class DefaultTaskServiceTests {
     void When_TaskIsUpdated_Then_TaskRepositorySaveIsCalled() throws TaskNotFoundException, TaskCategoryNotFoundException {
         // Arrange
         final var deadline = LocalDateTime.now();
-        final var category = new TaskCategory("some_name", "some_description");
-        final var taskWithUpdates = new Task("some_new_name", "some_new_description", deadline, category);
+        final var taskCategory = new TaskCategory("some_name", "some_description");
+        final var taskWithUpdates = new Task("some_new_name", "some_new_description", deadline, taskCategory);
 
+        when(taskCategoryService.getTaskCategoryByName("some_name")).thenReturn(taskCategory);
         when(taskRepository.findById(42L)).thenReturn(Optional.of(taskWithUpdates));
 
         // Act
@@ -168,8 +169,8 @@ public class DefaultTaskServiceTests {
     void When_TaskIsUpdated_Then_UpdatedTaskIsReturned() throws TaskNotFoundException, TaskCategoryNotFoundException {
         // Arrange
         final var deadline = LocalDateTime.now();
-        final var category = new TaskCategory("some_name", "some_description");
-        final var task = new Task("some_name", "some_description", deadline, category);
+        final var taskCategory = new TaskCategory("some_name", "some_description");
+        final var task = new Task("some_name", "some_description", deadline, taskCategory);
         task.setId(42);
 
         final var updatedDeadline = LocalDateTime.now().plusHours(3);
@@ -177,6 +178,7 @@ public class DefaultTaskServiceTests {
         final var taskWithUpdates = new Task("some_new_name", "some_new_description", updatedDeadline, updatedCategory);
 
         when(taskRepository.findById(42L)).thenReturn(Optional.of(task));
+        when(taskCategoryService.getTaskCategoryByName("some_new_name")).thenReturn(updatedCategory);
         when(taskRepository.save(task)).thenReturn(task);
 
         // Act
